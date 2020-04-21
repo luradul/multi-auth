@@ -56,4 +56,13 @@ class LoginController extends Controller
     {
         return Auth::guard('admin');
     }
+//izbunari u vendoru pravi logout method
+//    public function logout(Request $request)
+//    {
+//        $this->guard('admin')->logout();
+//
+//        $request->session()->invalidate();
+//
+//        return redirect('/login');
+//    }
 }

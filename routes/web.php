@@ -15,15 +15,22 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Regular-user routes
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::group(['regular-user-routes', 'middleware' => 'auth'], function () {
+    Route::get('/home', 'HomeController@index')->name('home');
+
+    //dole ti se nalazi gate na middleware-u, vidi da ga upotrebis pravilno
+//    Route::get('/home', 'HomeController@index')->middleware('can:has-yearly-access')->name('home');
+});
 
 // Admin routes
-Route::namespace('Admin')->group(function () {
+Route::group(['admin-routes', 'namespace' => 'Admin'], function () {
     Route::prefix('admin')->group(function () {
         Route::get('/','LoginController@showLoginForm')->name('admin.login');
         Route::post('/','LoginController@login');
+//        Route::post('logout','LoginController@logout')->name('admin.logout');
         Route::get('register','RegisterController@showRegistrationForm')->name('admin.register');
         Route::post('register','RegisterController@register');
 
@@ -39,7 +46,8 @@ Route::namespace('Admin')->group(function () {
     });
 });
 
-Route::namespace('Visitor')->group(function () {
+//Visitor routes
+Route::group(['visitor-routes', 'namespace' => 'Visitor'], function () {
     Route::prefix('visitor')->group(function () {
         Route::get('/','LoginController@showLoginForm')->name('visitor.login');
         Route::post('/','LoginController@login');
