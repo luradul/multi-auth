@@ -33,8 +33,14 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function customGates()
     {
+        //$user == ULOGOVAN/AUTENTIKOVAN user
         Gate::define('is-subscriber', function($user) {
+            //predvidja se da vec imas popunjeno odredjeno polje koje zelis da sluzi kao provera
             return $user->subscriptions !== 'without';
+        });
+        // znaci: ako je ulogovan neki korisnik koji nema pomenuti uslov, dobice "403|This action is unauthorized."
+        Gate::define('can-send-emails', function ($user) {
+            return $user->subscriptions == 'premium';
         });
 
         Gate::define('has-monthly-access', function($user) {

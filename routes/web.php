@@ -18,12 +18,14 @@ Route::get('/', function () {
 // Regular-user routes
 Auth::routes();
 
-Route::group(['regular-user-routes', 'middleware' => 'auth'], function () {
-    Route::get('/home', 'HomeController@index')->name('home');
 
-    //dole ti se nalazi gate na middleware-u, vidi da ga upotrebis pravilno
-//    Route::get('/home', 'HomeController@index')->middleware('can:has-yearly-access')->name('home');
+Route::group(['regular-user-routes', 'middleware' => 'auth'], function () {
+    Route::get('home', 'HomeController@index')->name('home');
+    //ova ruta ne dozvoljava slanje poruka odredjenim korisnicima, zahvaljujuci gate-u can-send-emails
+    Route::post('home', 'HomeController@mail')->middleware('can:can-send-emails');
 });
+
+
 
 // Admin routes
 Route::group(['admin-routes', 'namespace' => 'Admin'], function () {
