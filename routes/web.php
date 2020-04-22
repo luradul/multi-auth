@@ -18,10 +18,9 @@ Route::get('/', function () {
 // Regular-user routes
 Auth::routes();
 
-
 Route::group(['regular-user-routes', 'middleware' => 'auth'], function () {
     Route::get('home', 'HomeController@index')->name('home');
-    //ova ruta ne dozvoljava slanje poruka odredjenim korisnicima, zahvaljujuci gate-u can-send-emails
+    //ova ruta ne dozvoljava slanje poruka odredjenim korisnicima, zahvaljujuci gate-u: can-send-emails
     Route::post('home', 'HomeController@mail')->middleware('can:can-send-emails');
 });
 
@@ -37,7 +36,10 @@ Route::group(['admin-routes', 'namespace' => 'Admin'], function () {
         Route::post('register','RegisterController@register');
 
         //Dashboard routes
-        Route::get('dashboard','DashboardController@index')->name('admin.dashboard');
+        Route::middleware(['user_id'])->group(function () {
+            Route::get('dashboard','DashboardController@index')->name('admin.dashboard');
+            Route::post('dashboard','DashboardController@store');
+        });
     });
 
     Route::prefix('admin-password')->group(function () {
