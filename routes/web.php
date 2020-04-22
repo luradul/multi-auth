@@ -36,7 +36,7 @@ Route::group(['admin-routes', 'namespace' => 'Admin'], function () {
         Route::post('register','RegisterController@register');
 
         //Dashboard routes
-        Route::middleware(['user_id'])->group(function () {
+        Route::middleware(['user_id', 'auth:admin'])->group(function () {
             Route::get('dashboard','DashboardController@index')->name('admin.dashboard');
             Route::post('dashboard','DashboardController@store');
         });
