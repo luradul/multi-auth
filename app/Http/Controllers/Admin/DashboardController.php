@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Post;
 use App\Http\Requests\CreatePostRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -36,6 +37,10 @@ class DashboardController extends Controller
      */
     public function store(CreatePostRequest $request)
     {
-        dd($request->all());
+        $post = Post::create($request->validated());
+
+        return response()->json([
+            'data' => 'Uspesno sacuvano!'
+        ]);
     }
 }

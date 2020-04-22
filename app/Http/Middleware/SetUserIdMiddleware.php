@@ -16,9 +16,9 @@ class SetUserIdMiddleware
     public function handle($request, Closure $next)
     {
         //vrlo bitno i vrlo korisno!
-        //svaki put imas user_id u requestu, da g ane bi vadio iz samog requesta svaki put
-        if(empty(request('user_id'))) {
-            request()->merge(['user_id' => request()->user()->id]);
+        //svaki put imas user_id (admin_id u ovom slucaju) u requestu, da g ane bi vadio iz samog requesta svaki put
+        if(empty(request('admin_id'))) {
+            request()->merge(['admin_id' => request()->user()->id]);
         }
 
         return $next($request);

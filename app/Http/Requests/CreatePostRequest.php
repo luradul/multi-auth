@@ -24,6 +24,7 @@ class CreatePostRequest extends FormRequest
     public function rules()
     {
         return [
+            'admin_id' => 'required|numeric',
             'title' => 'required|min:2|max:20',
             'body' => 'required|string',
         ];
